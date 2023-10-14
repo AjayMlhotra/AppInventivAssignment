@@ -5,12 +5,8 @@ import androidx.annotation.NonNull;
 import com.appinventiv_assignment.BuildConfig;
 import com.appinventiv_assignment.api.ApiService;
 import com.appinventiv_assignment.utils.network_utils.InternetInterceptor;
-import com.google.gson.GsonBuilder;
-
 import java.util.concurrent.TimeUnit;
-
 import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;

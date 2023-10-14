@@ -28,7 +28,7 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ProductListingFragment extends Fragment implements ProductAdapter.OnItemClickListener {
+public class ProductListingFragment extends Fragment {
     private FragmentProductListingBinding binding;
     private ProductListingViewModel productListingViewModel;
     private ProductAdapter mProductAdapter;
@@ -44,8 +44,15 @@ public class ProductListingFragment extends Fragment implements ProductAdapter.O
         super.onViewCreated(view, savedInstanceState);
         productListingViewModel = new ViewModelProvider(this).get(ProductListingViewModel.class);
         productListingViewModel.callProductListApi();
-        setRecyclerView();
+        setListener();
         setObserver();
+        setRecyclerView();
+    }
+
+    private void setListener() {
+        binding.icMenu.setOnClickListener(view -> {
+            showFilterPopup(binding.icMenu);
+        });
     }
 
     private void setObserver() {
@@ -58,7 +65,7 @@ public class ProductListingFragment extends Fragment implements ProductAdapter.O
         RecyclerView recyclerView = binding.rcvProducts;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setHasFixedSize(true);
-        mProductAdapter = new ProductAdapter(this);
+        mProductAdapter = new ProductAdapter();
         recyclerView.setAdapter(mProductAdapter);
     }
 
@@ -67,42 +74,25 @@ public class ProductListingFragment extends Fragment implements ProductAdapter.O
             //show loader
             AppUtils.showToast(requireContext(), "Loader");
         } else if (resource.getType() == Status.SUCCESS) {
+            //Hide Loader
             if (apiType.equals(ApiConstant.PRODUCT_LIST)) {
-                AppUtils.showToast(requireContext(), "Data Fetched Successfully");
                 List<ProductListModel.ProductsDTO> mListOfProducts = (List<ProductListModel.ProductsDTO>) resource.getData();
-                if (mListOfProducts != null && !mListOfProducts.isEmpty()) {
-                    mProductAdapter.submitList(mListOfProducts);
-                }
+                mProductAdapter.submitList(mListOfProducts);
+                if(mListOfProducts == null || mListOfProducts.isEmpty()){
+                    binding.tvError.setVisibility(View.VISIBLE);
+                } else binding.tvError.setVisibility(View.GONE);
             }
         } else {
+            //Hide Loader
             AppUtils.showToast(requireContext(), resource.getMessage());
         }
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
+    private void showFilterPopup(View view) {
         PopupMenu popupMenu = new PopupMenu(requireActivity(), view);
         popupMenu.inflate(R.menu.option_menu);
         popupMenu.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) menuItem -> {
-            if (menuItem.getItemId() == R.id.actionOdd) {
-                productListingViewModel.applyFilterOnProductDb(0);
-                AppUtils.showToast(requireContext(), "Odd" + 0);
-            } else if (menuItem.getItemId() == R.id.actionDesc) {
-                productListingViewModel.applyFilterOnProductDb(1);
-                AppUtils.showToast(requireContext(), "Descending " + position);
-            } else if (menuItem.getItemId() == R.id.actionEvenDesc) {
-                productListingViewModel.applyFilterOnProductDb(2);
-                AppUtils.showToast(requireContext(), "Even Desc " + position);
-            } else if (menuItem.getItemId() == R.id.actioniPhone) {
-                productListingViewModel.applyFilterOnProductDb(3);
-                AppUtils.showToast(requireContext(), "iPhone " + position);
-            } else if (menuItem.getItemId() == R.id.actionSamsung) {
-                productListingViewModel.applyFilterOnProductDb(4);
-                AppUtils.showToast(requireContext(), "Samsung " + position);
-            } else {
-                productListingViewModel.applyFilterOnProductDb(5);
-                AppUtils.showToast(requireContext(), "Clear All " + position);
-            }
+            productListingViewModel.applyFilterOnProductDb(menuItem.getItemId());
             return false;
         });
         popupMenu.show();

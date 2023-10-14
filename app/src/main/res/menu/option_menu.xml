@@ -8,10 +8,10 @@
         android:title="@string/txt_descending" />
     <item
         android:id="@+id/actionEvenDesc"
-        android:title="@string/txt_iphone" />
+        android:title="@string/txt_even_descending" />
     <item
         android:id="@+id/actioniPhone"
-        android:title="@string/txt_odd" />
+        android:title="@string/txt_iphone" />
     <item
         android:id="@+id/actionSamsung"
         android:title="@string/txt_samsung" />

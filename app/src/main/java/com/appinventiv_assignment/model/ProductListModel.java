@@ -1,13 +1,9 @@
 package com.appinventiv_assignment.model;
 
-import android.widget.ImageView;
-import androidx.databinding.BindingAdapter;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import com.appinventiv_assignment.R;
 import com.appinventiv_assignment.db.constant.DBConstant;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 

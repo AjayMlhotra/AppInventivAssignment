@@ -2,7 +2,6 @@ package com.appinventiv_assignment.ui.product_listing.adapter;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -18,19 +17,13 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ProductListModel.ProductsDTO> lisOfProducts;
-    private final OnItemClickListener mCallBack;
-
-    public ProductAdapter(OnItemClickListener mCallBack) {
-        this.mCallBack = mCallBack;
-    }
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         AdapterProductListingBinding employeeListItemBinding =
                 DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                         R.layout.adapter_product_listing, parent, false);
-        return new ProductViewHolder(employeeListItemBinding, mCallBack);
+        return new ProductViewHolder(employeeListItemBinding);
     }
 
     @Override
@@ -51,13 +44,11 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        private final OnItemClickListener mCallBack;
         private final AdapterProductListingBinding binding;
 
-        public ProductViewHolder(AdapterProductListingBinding binding, OnItemClickListener mCallBack) {
+        public ProductViewHolder(AdapterProductListingBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            this.mCallBack = mCallBack;
         }
 
         @SuppressLint("SetTextI18n")
@@ -67,9 +58,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             binding.tvDiscount.setText(productDetail.getDiscountPercentage() + "% Off");
             binding.tvPrice.setText(productDetail.getPrice().toString() + " AED");
             binding.tvDesc.setText(AppUtils.isEmpty(productDetail.getDescription()));
-            binding.icMenu.setOnClickListener(view -> {
-                mCallBack.onItemClick(binding.icMenu, getAdapterPosition());
-            });
             Glide.with(binding.imgProduct.getContext())
                     .setDefaultRequestOptions(new RequestOptions()
                             .circleCrop())
@@ -77,10 +65,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .placeholder(R.drawable.rounded_drawable)
                     .into(binding.imgProduct);
         }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
     }
 }
 

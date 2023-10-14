@@ -4,30 +4,21 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.appinventiv_assignment.model.ProductListModel;
 import com.appinventiv_assignment.ui.product_listing.repository.ProductListRepository;
+import com.appinventiv_assignment.ui.product_listing.repository.impl.ProductListListRepositoryImpl;
 import com.appinventiv_assignment.utils.network_utils.Resource;
 import com.appinventiv_assignment.utils.livedata.SingleLiveEvent;
-
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class ProductListingViewModel extends ViewModel {
-    MutableLiveData<Resource<List<ProductListModel.ProductsDTO>>> listOfProduct;
+    private final MutableLiveData<Resource<List<ProductListModel.ProductsDTO>>> listOfProduct;
+    private ProductListRepository productListRepository;
     @Inject
-    ProductListRepository productListRepository;
-
-    static final ExecutorService databaseWriteExecutor =
-            Executors.newFixedThreadPool(4);
-
-    @Inject
-    public ProductListingViewModel(ProductListRepository productListRepository){
+    public ProductListingViewModel(ProductListListRepositoryImpl productListRepositoryImpl){
         listOfProduct = new SingleLiveEvent<>();
-        this.productListRepository = productListRepository;
-        databaseWriteExecutor.shutdown();
+        productListRepository = productListRepositoryImpl;
     }
 
     public MutableLiveData<Resource<List<ProductListModel.ProductsDTO>>> getProductList(){
@@ -38,7 +29,7 @@ public class ProductListingViewModel extends ViewModel {
         productListRepository.callProductApi(listOfProduct);
     }
 
-    public void applyFilterOnProductDb(int position) {
-        productListRepository.applyFilterOnProductDb(listOfProduct, position);
+    public void applyFilterOnProductDb(int resourceId) {
+        productListRepository.applyFilterOnProductDb(listOfProduct, resourceId);
     }
 }

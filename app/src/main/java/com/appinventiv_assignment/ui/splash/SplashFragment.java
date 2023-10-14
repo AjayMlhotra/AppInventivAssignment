@@ -31,7 +31,7 @@ public class SplashFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         new Handler().postDelayed(() -> {
             NavDirections action = SplashFragmentDirections.actionSplashFragmentToProductListingFragment();
-            Navigation.findNavController(view).navigate(action);
+            Navigation.findNavController(binding.getRoot()).navigate(action);
         }, 2000);
     }
 }

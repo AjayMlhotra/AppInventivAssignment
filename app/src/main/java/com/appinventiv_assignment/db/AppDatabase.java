@@ -2,20 +2,15 @@ package com.appinventiv_assignment.db;
 
 import android.content.Context;
 import android.util.Log;
-
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-
 import com.appinventiv_assignment.db.constant.DBConstant;
 import com.appinventiv_assignment.db.dao.ProductDao;
-import com.appinventiv_assignment.db.type_converter.ImageListConverter;
 import com.appinventiv_assignment.model.ProductListModel;
 
 @Database(entities = {ProductListModel.ProductsDTO.class}, version = DBConstant.VERSION, exportSchema = false)
-@TypeConverters({ImageListConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract ProductDao productDao();
     private static volatile AppDatabase instance;
