@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/actionOdd"
+        android:title="@string/txt_odd" />
+    <item
+        android:id="@+id/actionDesc"
+        android:title="@string/txt_descending" />
+    <item
+        android:id="@+id/actionEvenDesc"
+        android:title="@string/txt_iphone" />
+    <item
+        android:id="@+id/actioniPhone"
+        android:title="@string/txt_odd" />
+    <item
+        android:id="@+id/actionSamsung"
+        android:title="@string/txt_samsung" />
+    <item
+        android:id="@+id/actionClear"
+        android:title="@string/txt_clear_all" />
+</menu>
